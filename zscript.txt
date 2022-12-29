@@ -1,0 +1,30 @@
+version "4.6"
+
+#include "zscript/actors/doom/weaponssg2.zs"
+#include "zscript/actors/doom/weaponchaingun2.zs"
+#include "zscript/actors/doom/weaponplasma2.zs"
+//#include "zscript/actors/doom/weaponplasmazap.zs"
+#include "zscript/actors/doom/weaponrailgun.zs"
+#include "zscript/actors/doom/weaponsuperrocket.zs"
+#include "zscript/actors/doom/weaponpistol2.zs"
+#include "zscript/actors/doom/weaponbfg2.zs"
+#include "zscript/actors/doom/weaponfist2.zs"
+
+
+class FunPlayer : DoomPlayer
+{
+	Default
+	{		
+		Health 150;		
+		Player.StartItem "Pistol2";
+		Player.StartItem "FistResurrector";
+		Player.StartItem "Clip", 50;
+		Player.WeaponSlot 1, "Fist", "Chainsaw";
+		Player.WeaponSlot 2, "Pistol";
+		Player.WeaponSlot 3, "Shotgun", "SuperShotgun";
+		Player.WeaponSlot 4, "Chaingun";
+		Player.WeaponSlot 5, "RocketLauncher";
+		Player.WeaponSlot 6, "PlasmaRifle";
+		Player.WeaponSlot 7, "BFG9000";
+	}
+}

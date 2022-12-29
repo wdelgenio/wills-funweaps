@@ -1,0 +1,1 @@
+This is a doom2 mod that alters all the weapons to make them much more powerful but still balanced.  Useful for playing difficult slaughtermaps without being overwhelmed.

@@ -1,0 +1,9 @@
+DamageType Railgun
+{
+	NoArmor
+}
+
+GameInfo
+{
+	PlayerClasses = "FunPlayer"
+}
