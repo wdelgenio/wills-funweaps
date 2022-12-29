@@ -9,7 +9,7 @@ class RailgunFun : Shotgun replaces Shotgun
 	Default
 	{
 		Weapon.SelectionOrder 1300;
-		Weapon.AmmoUse1 5;
+		Weapon.AmmoUse1 3;
 		Weapon.AmmoUse2 2;		
 		Weapon.Kickback 500;
 		Weapon.AmmoGive1 20;
@@ -82,7 +82,7 @@ class RailgunFun : Shotgun replaces Shotgun
 		}
 		player.mo.PlayAttacking2 ();
 		
-		A_RailAttack(1000,0,true,0,0,0,0,"RailgunPuff2");
+		A_RailAttack(1000,0,false,0,0,0,0,"RailgunPuff2");
 	}
 	
 	action void A_FireRailgunAlt()
@@ -105,10 +105,10 @@ class RailgunFun : Shotgun replaces Shotgun
 
 		double pitch = BulletSlope ();
 				
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 14; i++)
 		{
 			double spread = 9.625;
-			A_RailAttack(200,0,false,-1,0,0,0,"BulletPuff",spread,0,0,0,2.0,2.0,"none",0,270,5);
+			A_RailAttack(100,0,false,-1,0,0,0,"BulletPuff",spread,0,0,0,2.0,2.0,"none",0,270,5);
 		}
 		
 	}

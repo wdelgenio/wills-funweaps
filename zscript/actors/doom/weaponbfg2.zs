@@ -76,14 +76,20 @@ class BFG11000 : BFG9000 replaces BFG9000
 	}
 }
 
+// This is a big BFG ball that creates a giant explosion whose radius is a function of how far the ball has traveled
+// It also rips through enemies, so you'll want to pick a wall or floor or ceiling to hit.
 class BFGBallBig : BFGBall replaces BFGBall
 {	
+	int MaxRadius;
+	Property MaxRadius : MaxRadius;
+
 	Default
 	{	
+		BFGBallBig.MaxRadius 4096;
 		Speed 20;
 		Damage 150;
 		MeleeRange 16;
-		ExplosionDamage 2048;	
+		ExplosionDamage 2048;
 		Projectile;
 		Translation 2;
 		Scale 2;
@@ -107,9 +113,9 @@ class BFGBallBig : BFGBall replaces BFGBall
 	{
 		int thinkTime = 4;		
 		// can't modify ExplosionRadius so instead we use MeleeRange to keep track of our expanding explosion radius
-		if (self.MeleeRange < 1536)
+		if (self.MeleeRange < BFGBallBig(self).MaxRadius)
 		{
-			self.MeleeRange += int(self.Speed * (thinkTime)) / 1.41;
+			self.MeleeRange += int(self.Speed * (thinkTime)) / 1.39;
 		}
 		
 		int particles = self.MeleeRange * self.MeleeRange / 20;
@@ -137,10 +143,13 @@ class BFGBallBig : BFGBall replaces BFGBall
 	
 	action void A_BFGBallBigExplode()
 	{
+		// reduce damage as explosion gets bigger (though increase damage for very small explosions)
+		double damageAdjustment = 0.32 * BFGBallBig(self).MaxRadius / ( MeleeRange + 0.16 * BFGBallBig(self).MaxRadius);
 		A_Explode(damage:ExplosionDamage, distance:MeleeRange,flags:0);
 	}
 }
 
+// This upgraded BFG will shoot tracers that act as railguns, so a close enemies cannot protect the ones behind them
 class BFGBall2 : BFGBall replaces BFGBall
 {
 	Default
@@ -218,7 +227,7 @@ class BFGBall2 : BFGBall replaces BFGBall
 			p.color1 = -1;
 			p.color2 = 0;
 			p.maxdiff = 0;
-			p.flags = 1;
+			p.flags = RGF_SILENT;
 			p.puff = spraytype;
 			p.angleoffset = 0;
 			p.pitchoffset = pitchoffset - originator.pitch;
@@ -228,7 +237,7 @@ class BFGBall2 : BFGBall replaces BFGBall
 			p.drift = 0;
 			//p.spawnclass = "null";
 			p.SpiralOffset = 270;
-			p.limit = 0;
+			p.limit = 2;
 			originator.RailAttack(p);
 			
 		}

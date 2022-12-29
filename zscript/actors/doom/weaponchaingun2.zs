@@ -10,8 +10,10 @@ class ChaingunFun : Chaingun replaces Chaingun
 	{
 		Weapon.SelectionOrder 700;
 		Weapon.AmmoUse 1;
+		Weapon.AmmoUse2 1;
 		Weapon.AmmoGive 20;
 		Weapon.AmmoType "Clip";
+		Weapon.AmmoType2 "Clip";
 		Weapon.SlotNumber 4;
 		Inventory.PickupMessage "$GOTCHAINGUN";
 		Obituary "$OB_MPCHAINGUN";
@@ -29,7 +31,11 @@ class ChaingunFun : Chaingun replaces Chaingun
 		CHGG A 1 A_Raise;
 		Loop;
 	Fire:
-		CHGG AB 5 A_FireCGunFun;
+		CHGG AB 5 A_FireCGunFun();
+		CHGG B 0 A_ReFire;
+		Goto Ready;
+	AltFire:
+		CHGG AB 1 A_FireCGunFun(true);
 		CHGG B 0 A_ReFire;
 		Goto Ready;
 	Flash:
@@ -42,7 +48,7 @@ class ChaingunFun : Chaingun replaces Chaingun
 		Stop;
 	}
 
-	action void A_FireCGunFun()
+	action void A_FireCGunFun(bool altFire = false)
 	{
 		if (player == null)
 		{
@@ -52,8 +58,12 @@ class ChaingunFun : Chaingun replaces Chaingun
 		Weapon weap = player.ReadyWeapon;
 		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
 		{
-			if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
-				return;
+			// for altfire, since we're firing so fast, only randomly deplete ammo 25% of the time
+			if (!altFire || random[FireAltCg](1,4) == 1) {
+				if (!weap.DepleteAmmo (weap.bAltFire, true, 1)) {
+					return;
+				}
+			}
 
 			A_StartSound ("weapons/chngun", CHAN_WEAPON);
 
@@ -72,15 +82,23 @@ class ChaingunFun : Chaingun replaces Chaingun
 			}
 		}
 		player.mo.PlayAttacking2 ();
-		
-		for (int i = 0 ; i < 10 ; i++)
-		{
+
+		if (altFire) {
+			double spread = 5.0;
 			int damage = 12 * random[FireSG2](1, 3);
-			double ang = angle + Random2[FireSG2]() * (3. / 256);
+			//action void A_RailAttack(int damage, int spawnofs_xy = 0, bool useammo = true, color color1 = 0, color color2 = 0, int flags = 0, double maxdiff = 0, class<Actor> pufftype = "BulletPuff", double spread_xy = 0, double spread_z = 0, double range = 0, int duration = 0, double sparsity = 1.0, double driftspeed = 1.0, class<Actor> spawnclass = "none", double spawnofs_z = 0, int spiraloffset = 270, int limit = 0)
+			A_RailAttack(damage, useammo:false, color1:-1, flags:RGF_SILENT, spread_xy:spread, sparsity:7.0, limit:3);
+		} else {
+		
+			for (int i = 0 ; i < 10 ; i++)
+			{
+				int damage = 12 * random[FireSG2](1, 3);
+				double ang = angle + Random2[FireSG2]() * (3. / 256);
 
-			LineAttack (ang, PLAYERMISSILERANGE, pitch + Random2[FireSG2]() * (3.0 / 256), damage, 'Hitscan', "BulletPuff");
+				LineAttack (ang, PLAYERMISSILERANGE, pitch + Random2[FireSG2]() * (3.0 / 256), damage, 'Hitscan', "BulletPuff");
+			}
+
+			GunShot (!player.refire, "BulletPuff", BulletSlope ());
 		}
-
-		GunShot (!player.refire, "BulletPuff", BulletSlope ());
 	}
 }
