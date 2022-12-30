@@ -216,17 +216,47 @@ class IceBall : Actor
 		if (launched > 0)
 			A_StartSound ("weapons/plasmaf");
 			
-		angle += 4.0;	
-	}	
+		angle += 4.0;
+
+		// slowly shink the into nonexistence
+		if (self.Scale.X < 1) {
+			SetStateLabel("Death");
+			bMissile = false;
+		} else {
+			A_SetScale(self.Scale.X * 0.97);
+			A_SetSpeed(self.Speed * 0.95);
+		}
+	}
 }
 
 class IceBallShard : PlasmaBall {
 	Default
 	{
-		Scale 0.5;
-		Speed 20;
+		Scale 0.7;
+		Speed 18;
 		Damage 10;
 		Translation "192:207=248:252";		
 		SeeSound "";
+	}
+
+	States
+	{
+	Spawn:
+		PLSS AB 6 Bright A_ShardThink;
+		Loop;
+	Death:
+		PLSE BCDE 2 Bright;
+		Stop;
+	}
+
+	action void A_ShardThink() {
+		// slowly shink the into nonexistence
+		if (self.Scale.X < 0.2) {
+			SetStateLabel("Death");
+			bMissile = false;
+		} else {
+			A_SetScale(self.Scale.X * 0.85);
+			A_SetSpeed(self.Speed * 0.7);
+		}
 	}
 }
