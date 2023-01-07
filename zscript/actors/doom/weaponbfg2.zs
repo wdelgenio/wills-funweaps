@@ -85,11 +85,11 @@ class BFGBallBig : BFGBall replaces BFGBall
 
 	Default
 	{	
-		BFGBallBig.MaxRadius 4096;
+		BFGBallBig.MaxRadius 1024;
 		Speed 20;
-		Damage 150;
+		Damage 100;
 		MeleeRange 16;
-		ExplosionDamage 2048;
+		ExplosionDamage 1024;
 		Projectile;
 		Translation 2;
 		Scale 2;
