@@ -33,14 +33,14 @@ class Pistol2 : Pistol replaces Pistol
 		Loop;
 	Fire:
 		PISG A 1;
-		PISG B 4 A_FirePistol2(650);
+		PISG B 4 A_FirePistol2(325);
 		PISG C 20;
 		PISG B 18;
 		PISG B 1 A_ReFire;
 		Goto Ready;
 	AltFire:
 		PISG A 1;
-		PISG B 4 A_FirePistol2(500,1,0.05);
+		PISG B 4 A_FirePistol2(250,1,0.05);
 		PISG C 20;
 		PISG B 18;
 		PISG B 1 A_ReFire;

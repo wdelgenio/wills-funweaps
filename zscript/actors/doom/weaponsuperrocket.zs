@@ -31,8 +31,8 @@ class SuperRocketLauncher : RocketLauncher replaces RocketLauncher
 		MISG A 1 A_Raise;
 		Loop;
 	Fire:
-		MISG B 8 A_GunFlash;
-		MISG B 14 A_FireSuperMissile;
+		MISG B 9 A_GunFlash;
+		MISG B 16 A_FireSuperMissile;
 		MISG B 5 A_ReFire;
 		Goto Ready;
 	AltFire:
@@ -81,7 +81,7 @@ class SuperRocketLauncher : RocketLauncher replaces RocketLauncher
 				return;
 		}
 		
-		int numShots = random[SuperRocket](5, 7);
+		int numShots = random[SuperRocket](2, 5);
 		
 		for (int i = 0; i < numShots; i++) // Spawn some random number of rockets
 		{
@@ -108,8 +108,8 @@ class MiniRocket : FastProjectile
 		Radius 6;
 		Height 4;
 		Speed 120;
-		Damage 38;
-		ExplosionDamage 80;
+		Damage 30;
+		ExplosionDamage 60;
 		MaxTargetRange 4000;
 		Translation 1;
 		Projectile;		
@@ -202,9 +202,9 @@ class SuperRocket : Rocket
 			}
 
 			if (slope < Vel.Z)
-				Vel.Z -= 8. / 8;
+				Vel.Z -= 2. / 8;
 			else
-				Vel.Z += 8. / 8;
+				Vel.Z += 2. / 8;
 				
 			return;
 		}

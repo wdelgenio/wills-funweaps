@@ -105,9 +105,9 @@ class RailgunFun : Shotgun replaces Shotgun
 
 		double pitch = BulletSlope ();
 				
-		for (int i = 0; i < 14; i++)
+		for (int i = 0; i < 12; i++)
 		{
-			double spread = 9.625;
+			double spread = 14;
 			A_RailAttack(100,0,false,-1,0,0,0,"BulletPuff",spread,0,0,0,2.0,2.0,"none",0,270,5);
 		}
 		
